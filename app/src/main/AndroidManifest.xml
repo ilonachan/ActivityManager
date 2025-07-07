@@ -53,6 +53,12 @@
             android:label="@string/intent_launcher_activity" />
 
         <activity
+            android:name=".intent.IntentBroadcastActivity"
+            android:exported="true"
+            android:label="@string/intent_broadcast_activity" >
+        </activity>
+
+        <activity
             android:name=".intent.analyzer.IntentAnalyzerActivity"
             android:exported="true"
             android:label="@string/intent_analyzer_activity" />

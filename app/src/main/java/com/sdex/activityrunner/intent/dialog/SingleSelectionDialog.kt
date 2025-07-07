@@ -7,6 +7,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.sdex.activityrunner.R
 import com.sdex.activityrunner.commons.BaseDialogFragment
 import com.sdex.activityrunner.intent.dialog.source.ActionSource
+import com.sdex.activityrunner.intent.dialog.source.LaunchTypeSource
 import com.sdex.activityrunner.intent.dialog.source.MimeTypeSource
 
 class SingleSelectionDialog : BaseDialogFragment() {
@@ -20,6 +21,7 @@ class SingleSelectionDialog : BaseDialogFragment() {
         val source = when (type) {
             R.string.launch_param_action -> ActionSource()
             R.string.launch_param_mime_type -> MimeTypeSource()
+            R.string.launch_param_type -> LaunchTypeSource(requireContext())
             else -> throw IllegalStateException("Wrong type: $type")
         }
 

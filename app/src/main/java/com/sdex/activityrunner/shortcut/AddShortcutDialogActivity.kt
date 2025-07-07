@@ -223,7 +223,10 @@ class AddShortcutDialogActivity : AppCompatActivity(), IconDialog.Callback {
         val launchParams = historyToLaunchParamsConverter.convert()
         val converter = LaunchParamsToIntentConverter(launchParams)
         val intent = converter.convert()
-        createShortcut(this, shortcutName, intent, bitmap)
+        if(launchParams.launchType == "TYPE_ACTIVITY")
+            createShortcut(this, shortcutName, intent, bitmap)
+        else
+            createBroadcastShortcut(this, shortcutName, historyModel.id, bitmap)
     }
 
     private fun loadIcon(uri: Uri) {

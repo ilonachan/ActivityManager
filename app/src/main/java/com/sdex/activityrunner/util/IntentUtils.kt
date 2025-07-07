@@ -147,6 +147,19 @@ object IntentUtils {
         }
     }
 
+    fun broadcastIntent(context: Context, intent: Intent) {
+        try {
+            context.sendBroadcast(intent)
+            Toast.makeText(context, R.string.starting_intent_broadcast, Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            MaterialAlertDialogBuilder(context)
+                .setTitle(R.string.starting_intent_broadcast_failed)
+                .setMessage(e.message)
+                .setPositiveButton(android.R.string.ok, null)
+                .show()
+        }
+    }
+
     fun launchApplication(context: Context, packageName: String) {
         val intent = context.packageManager.getLaunchIntentForPackage(packageName)
         if (intent != null) {

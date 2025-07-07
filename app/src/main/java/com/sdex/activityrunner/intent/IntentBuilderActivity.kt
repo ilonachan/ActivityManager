@@ -24,6 +24,7 @@ import com.sdex.activityrunner.intent.dialog.SingleSelectionDialog
 import com.sdex.activityrunner.intent.dialog.ValueInputDialog
 import com.sdex.activityrunner.intent.history.HistoryActivity
 import com.sdex.activityrunner.intent.param.Action
+import com.sdex.activityrunner.intent.param.LaunchType
 import com.sdex.activityrunner.intent.param.MimeType
 import com.sdex.activityrunner.util.IntentUtils
 import dagger.hilt.android.AndroidEntryPoint
@@ -107,6 +108,7 @@ class IntentBuilderActivity : BaseActivity(),
             R.string.launch_param_categories
         )
         bindMultiSelectionDialog(binding.flagsClickInterceptor, R.string.launch_param_flags)
+        bindSingleSelectionDialog(binding.typeEditImageView, R.string.launch_param_type)
 
         binding.launch.setOnClickListener {
             if (binding.saveToHistory.isChecked) {
@@ -114,7 +116,11 @@ class IntentBuilderActivity : BaseActivity(),
             }
             val converter = LaunchParamsToIntentConverter(launchParams)
             val intent = converter.convert()
-            IntentUtils.launchActivity(this@IntentBuilderActivity, intent)
+            when (launchParams.launchType) {
+                "TYPE_ACTIVITY" -> IntentUtils.launchActivity(this@IntentBuilderActivity, intent)
+                "TYPE_BROADCAST" -> IntentUtils.broadcastIntent(this@IntentBuilderActivity, intent)
+                else -> throw IllegalStateException("Invalid launch type selected")
+            }
         }
 
         showLaunchParams()
@@ -147,6 +153,7 @@ class IntentBuilderActivity : BaseActivity(),
             R.string.launch_param_class_name -> launchParams.className = value
             R.string.launch_param_data -> launchParams.data = value
             R.string.launch_param_action -> launchParams.action = value
+            R.string.launch_param_type -> launchParams.launchType = value
             R.string.launch_param_mime_type -> launchParams.mimeType = value
         }
         showLaunchParams()
@@ -162,6 +169,10 @@ class IntentBuilderActivity : BaseActivity(),
             R.string.launch_param_mime_type -> {
                 launchParams.mimeType = if (position == 0) null
                 else MimeType.list()[position]
+            }
+
+            R.string.launch_param_type -> {
+                launchParams.launchType = LaunchType.list()[position]
             }
         }
         showLaunchParams()
@@ -227,6 +238,7 @@ class IntentBuilderActivity : BaseActivity(),
             R.string.launch_param_class_name -> launchParams.className
             R.string.launch_param_data -> launchParams.data
             R.string.launch_param_action -> launchParams.action
+            R.string.launch_param_type -> launchParams.launchType
             R.string.launch_param_mime_type -> launchParams.mimeType
             else -> throw IllegalStateException("Unknown type $type")
         }
@@ -242,6 +254,11 @@ class IntentBuilderActivity : BaseActivity(),
             R.string.launch_param_mime_type -> {
                 if (launchParams.mimeType == null) 0
                 else MimeType.list().indexOf(launchParams.mimeType!!)
+            }
+
+            R.string.launch_param_type -> {
+                if (launchParams.launchType == null) 0
+                else LaunchType.list().indexOf(launchParams.launchType!!)
             }
 
             else -> throw IllegalStateException("Unknown type $type")
@@ -262,6 +279,9 @@ class IntentBuilderActivity : BaseActivity(),
         binding.dataView.text = launchParams.data
         binding.actionView.text = launchParams.action
         binding.mimeTypeView.text = launchParams.mimeType
+        binding.typeView.text = launchParams.launchType?.let {
+            this.baseContext.getString(LaunchType.getDisplayTextId(it)!!)
+        }
         extraAdapter.setItems(launchParams.extras)
         categoriesAdapter.setItems(launchParams.getCategoriesValues())
         flagsAdapter.setItems(launchParams.getFlagsValues())

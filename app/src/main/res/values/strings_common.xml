@@ -4,6 +4,7 @@
     <string name="app_name" translatable="false">Activity Manager</string>
     <string name="intent_launcher_activity" translatable="false">Intent launcher</string>
     <string name="intent_analyzer_activity" translatable="false">Analyze intent</string>
+    <string name="intent_broadcast_activity" translatable="false">Broadcast Springboard</string>
 
     <string name="colon_space" translatable="false">: </string>
     <string name="text_separator" translatable="false"> | </string>

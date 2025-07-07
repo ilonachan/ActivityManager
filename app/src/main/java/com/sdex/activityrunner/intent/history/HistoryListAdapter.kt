@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sdex.activityrunner.R
 import com.sdex.activityrunner.databinding.ItemHistoryBinding
 import com.sdex.activityrunner.db.history.HistoryModel
+import com.sdex.activityrunner.intent.param.LaunchType
 import com.sdex.activityrunner.intent.param.None
 
 class HistoryListAdapter(
@@ -63,6 +64,9 @@ class HistoryListAdapter(
             binding.extras.setText(isNotEmpty(item.extras))
             binding.categories.setText(isNotEmpty(item.categories))
             binding.flags.setText(isNotEmpty(item.flags))
+            binding.launchType.text = getValueOrPlaceholder(item.launchType?.let {
+                binding.root.context.getString(LaunchType.getDisplayTextId(it)!!)
+            })
 
             binding.root.setOnClickListener {
                 callback.onItemClicked(item, bindingAdapterPosition)

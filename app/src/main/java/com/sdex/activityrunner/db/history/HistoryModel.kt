@@ -19,6 +19,7 @@ class HistoryModel : Serializable {
     var categories: String? = null
     var flags: String? = null
     var extras: String? = null
+    var launchType: String? = null
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

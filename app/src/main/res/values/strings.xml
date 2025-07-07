@@ -26,6 +26,9 @@
     <string name="starting_activity_failed">Failed to start activity: %s</string>
     <string name="starting_activity_launch_intent_failed">Cannot find launcher activity</string>
     <string name="starting_activity_failed_security">You don\'t have permission to run this activity: %s</string>
+    <string name="starting_intent_broadcast">Broadcasting Intent</string>
+    <string name="starting_intent_broadcast_failed">Failed to broadcast Intent</string>
+    <string name="starting_intent_broadcast_missing">No Broadcast Intent specified</string>
     <string name="starting_activity_intent">Starting activity</string>
     <string name="starting_activity_intent_failed">Failed to start activity</string>
     <string name="starting_activity_root_error">Failed to launch the activity using root</string>
@@ -51,6 +54,9 @@
     <string name="launch_param_extras_add">+ Add extra</string>
     <string name="launch_param_categories">Categories</string>
     <string name="launch_param_flags">Flags</string>
+    <string name="launch_param_type">Launch Type</string>
+    <string name="launch_param_type_activity">Activity</string>
+    <string name="launch_param_type_broadcast">Broadcast</string>
     <string name="save_to_history">Save to history</string>
     <string name="item_history_has_extras">Extras</string>
     <string name="item_history_has_categories">Categories</string>

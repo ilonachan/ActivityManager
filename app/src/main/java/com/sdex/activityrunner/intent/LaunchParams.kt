@@ -12,7 +12,8 @@ data class LaunchParams(
     var mimeType: String? = null,
     var categories: ArrayList<Int> = ArrayList(0),
     var flags: ArrayList<Int> = ArrayList(0),
-    var extras: ArrayList<LaunchParamsExtra> = ArrayList(0)
+    var extras: ArrayList<LaunchParamsExtra> = ArrayList(0),
+    var launchType: String? = "TYPE_ACTIVITY"
 ) : Parcelable {
 
     fun setFrom(other: LaunchParams?) {
@@ -24,5 +25,6 @@ data class LaunchParams(
         categories = other?.categories ?: categories
         flags = other?.flags ?: flags
         extras = other?.extras ?: extras
+        launchType = other?.launchType ?: launchType
     }
 }
