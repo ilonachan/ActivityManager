@@ -117,8 +117,8 @@ class IntentBuilderActivity : BaseActivity(),
             val converter = LaunchParamsToIntentConverter(launchParams)
             val intent = converter.convert()
             when (launchParams.launchType) {
-                "TYPE_ACTIVITY" -> IntentUtils.launchActivity(this@IntentBuilderActivity, intent)
-                "TYPE_BROADCAST" -> IntentUtils.broadcastIntent(this@IntentBuilderActivity, intent)
+                LaunchType.Activity -> IntentUtils.launchActivity(this@IntentBuilderActivity, intent)
+                LaunchType.Broadcast -> IntentUtils.broadcastIntent(this@IntentBuilderActivity, intent)
                 else -> throw IllegalStateException("Invalid launch type selected")
             }
         }
@@ -153,7 +153,7 @@ class IntentBuilderActivity : BaseActivity(),
             R.string.launch_param_class_name -> launchParams.className = value
             R.string.launch_param_data -> launchParams.data = value
             R.string.launch_param_action -> launchParams.action = value
-            R.string.launch_param_type -> launchParams.launchType = value
+            R.string.launch_param_type -> launchParams.launchType = LaunchType.valueOfOrNull(value)
             R.string.launch_param_mime_type -> launchParams.mimeType = value
         }
         showLaunchParams()
@@ -172,7 +172,7 @@ class IntentBuilderActivity : BaseActivity(),
             }
 
             R.string.launch_param_type -> {
-                launchParams.launchType = LaunchType.list()[position]
+                launchParams.launchType = LaunchType.entries[position]
             }
         }
         showLaunchParams()
@@ -238,7 +238,7 @@ class IntentBuilderActivity : BaseActivity(),
             R.string.launch_param_class_name -> launchParams.className
             R.string.launch_param_data -> launchParams.data
             R.string.launch_param_action -> launchParams.action
-            R.string.launch_param_type -> launchParams.launchType
+            R.string.launch_param_type -> launchParams.launchType?.name
             R.string.launch_param_mime_type -> launchParams.mimeType
             else -> throw IllegalStateException("Unknown type $type")
         }
@@ -258,7 +258,7 @@ class IntentBuilderActivity : BaseActivity(),
 
             R.string.launch_param_type -> {
                 if (launchParams.launchType == null) 0
-                else LaunchType.list().indexOf(launchParams.launchType!!)
+                else LaunchType.entries.indexOf(launchParams.launchType!!)
             }
 
             else -> throw IllegalStateException("Unknown type $type")
@@ -280,7 +280,7 @@ class IntentBuilderActivity : BaseActivity(),
         binding.actionView.text = launchParams.action
         binding.mimeTypeView.text = launchParams.mimeType
         binding.typeView.text = launchParams.launchType?.let {
-            this.baseContext.getString(LaunchType.getDisplayTextId(it)!!)
+            this.baseContext.getString(it.displayResource)
         }
         extraAdapter.setItems(launchParams.extras)
         categoriesAdapter.setItems(launchParams.getCategoriesValues())

@@ -1,6 +1,7 @@
 package com.sdex.activityrunner.intent
 
 import android.os.Parcelable
+import com.sdex.activityrunner.intent.param.LaunchType
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
@@ -13,7 +14,7 @@ data class LaunchParams(
     var categories: ArrayList<Int> = ArrayList(0),
     var flags: ArrayList<Int> = ArrayList(0),
     var extras: ArrayList<LaunchParamsExtra> = ArrayList(0),
-    var launchType: String? = "TYPE_ACTIVITY"
+    var launchType: LaunchType? = LaunchType.Activity
 ) : Parcelable {
 
     fun setFrom(other: LaunchParams?) {

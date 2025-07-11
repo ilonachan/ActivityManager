@@ -3,6 +3,7 @@ package com.sdex.activityrunner.di
 import android.content.Context
 import com.sdex.activityrunner.db.cache.CacheDatabase
 import com.sdex.activityrunner.db.history.HistoryDatabase
+import com.sdex.activityrunner.db.shortcut.ShortcutDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,4 +32,13 @@ object DatabaseModule {
 
     @Provides
     fun provideHistoryDao(database: HistoryDatabase) = database.historyDao
+
+    @Provides
+    @Singleton
+    fun provideShortcutDatabase(
+        @ApplicationContext context: Context
+    ) = ShortcutDatabase.getDatabase(context)
+
+    @Provides
+    fun provideShortcutDao(database: ShortcutDatabase) = database.shortcutDao
 }

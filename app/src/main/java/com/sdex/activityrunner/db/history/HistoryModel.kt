@@ -2,6 +2,7 @@ package com.sdex.activityrunner.db.history
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.sdex.activityrunner.intent.param.LaunchType
 import java.io.Serializable
 
 @Entity
@@ -19,7 +20,7 @@ class HistoryModel : Serializable {
     var categories: String? = null
     var flags: String? = null
     var extras: String? = null
-    var launchType: String? = null
+    var launchType: LaunchType? = null
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

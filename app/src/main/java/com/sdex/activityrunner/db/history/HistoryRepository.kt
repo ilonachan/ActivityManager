@@ -19,4 +19,6 @@ class HistoryRepository @Inject constructor(
     fun insert(vararg historyModel: HistoryModel) {
         historyModelDao.insert(*historyModel)
     }
+
+    fun getEntry(id: Int): HistoryModel? = historyModelDao.getEntry(id)
 }

@@ -25,4 +25,7 @@ interface HistoryModelDao {
 
     @Query("DELETE FROM HistoryModel")
     fun clean()
+
+    @Query("SELECT * from HistoryModel WHERE id = :id")
+    fun getEntry(id: Int): HistoryModel?
 }

@@ -4,8 +4,10 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.sdex.activityrunner.db.LaunchTypeConverter
 
 val MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(db: SupportSQLiteDatabase) {
@@ -13,6 +15,7 @@ val MIGRATION_1_2 = object : Migration(1, 2) {
     }
 }
 
+@TypeConverters(LaunchTypeConverter::class)
 @Database(
     entities = [(HistoryModel::class)],
     version = 2,

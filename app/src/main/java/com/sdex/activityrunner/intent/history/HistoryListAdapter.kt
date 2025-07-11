@@ -65,7 +65,7 @@ class HistoryListAdapter(
             binding.categories.setText(isNotEmpty(item.categories))
             binding.flags.setText(isNotEmpty(item.flags))
             binding.launchType.text = getValueOrPlaceholder(item.launchType?.let {
-                binding.root.context.getString(LaunchType.getDisplayTextId(it)!!)
+                binding.root.context.getString(it.displayResource)
             })
 
             binding.root.setOnClickListener {

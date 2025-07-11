@@ -76,4 +76,6 @@ object Category {
         }
         return list
     }
+
+    fun byInternal(key: String) = list().indexOf(key).takeIf { it != -1 }
 }

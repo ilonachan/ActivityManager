@@ -75,4 +75,11 @@ object Flag {
         }
         return list
     }
+
+    fun unpack(flags: Int) =
+        FLAGS.values.mapIndexedNotNull { i, it ->
+            i.takeIf { it and flags != 0 }
+        }
+
+    fun at(index: Int) = FLAGS[list()[index]]!!
 }

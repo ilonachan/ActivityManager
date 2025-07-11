@@ -33,17 +33,21 @@ import com.sdex.activityrunner.R
 import com.sdex.activityrunner.app.ActivityModel
 import com.sdex.activityrunner.databinding.ActivityAddShortcutBinding
 import com.sdex.activityrunner.db.history.HistoryModel
+import com.sdex.activityrunner.db.shortcut.ShortcutRepository
+import com.sdex.activityrunner.db.shortcut.toShortcut
 import com.sdex.activityrunner.extensions.doAfterMeasure
 import com.sdex.activityrunner.extensions.resolveColorAttr
 import com.sdex.activityrunner.extensions.serializable
 import com.sdex.activityrunner.intent.converter.HistoryToLaunchParamsConverter
-import com.sdex.activityrunner.intent.converter.LaunchParamsToIntentConverter
 import com.sdex.activityrunner.preferences.TooltipPreferences
 import com.sdex.activityrunner.util.IntentUtils
 import com.tomergoldst.tooltips.ToolTip
 import com.tomergoldst.tooltips.ToolTipsManager
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 import kotlin.properties.Delegates
 
+@AndroidEntryPoint
 class AddShortcutDialogActivity : AppCompatActivity(), IconDialog.Callback {
 
     private lateinit var binding: ActivityAddShortcutBinding
@@ -55,6 +59,8 @@ class AddShortcutDialogActivity : AppCompatActivity(), IconDialog.Callback {
     private var launcherLargeIconSize by Delegates.notNull<Int>()
     private var bitmap: Bitmap? = null
     private var iconPack: IconPack? = null
+
+    @Inject lateinit var shortcutRepository: ShortcutRepository;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -221,12 +227,11 @@ class AddShortcutDialogActivity : AppCompatActivity(), IconDialog.Callback {
     private fun createHistoryModelShortcut(historyModel: HistoryModel, shortcutName: String) {
         val historyToLaunchParamsConverter = HistoryToLaunchParamsConverter(historyModel)
         val launchParams = historyToLaunchParamsConverter.convert()
-        val converter = LaunchParamsToIntentConverter(launchParams)
-        val intent = converter.convert()
-        if(launchParams.launchType == "TYPE_ACTIVITY")
-            createShortcut(this, shortcutName, intent, bitmap)
-        else
-            createBroadcastShortcut(this, shortcutName, historyModel.id, bitmap)
+        val shortcut = launchParams.toShortcut()
+        shortcut.name = shortcutName
+        shortcut.icon = bitmap
+
+        createShortcut(this, shortcut, shortcutRepository)
     }
 
     private fun loadIcon(uri: Uri) {

@@ -5,15 +5,34 @@ import android.content.Intent
 import android.graphics.Bitmap
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
+import androidx.core.content.pm.ShortcutManagerCompat.FLAG_MATCH_PINNED
 import androidx.core.graphics.drawable.IconCompat
 import com.sdex.activityrunner.R
-import com.sdex.activityrunner.intent.IntentBroadcastActivity
+import com.sdex.activityrunner.db.shortcut.Shortcut
+import com.sdex.activityrunner.db.shortcut.ShortcutRepository
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
-fun createBroadcastShortcut(context: Context, name: String, historyId: Int, icon: Bitmap?): Boolean {
-    val wrappingIntent = Intent(context, IntentBroadcastActivity::class.java)
-    wrappingIntent.putExtra("broadcast", historyId)
+fun listShortcuts(context: Context): List<ShortcutInfoCompat> =
+    ShortcutManagerCompat.getShortcuts(context, FLAG_MATCH_PINNED)
+
+fun cleanupShortcuts(context: Context, shortcutRepository: ShortcutRepository) {
+    shortcutRepository.clearUnused(listShortcuts(context).mapNotNull {
+        it.intent.getLongExtra(ShortcutHandlerActivity.ARG_ENTRY_ID, 0).takeIf { it != 0L }
+    })
+}
+
+fun createShortcut(context: Context, shortcut: Shortcut,
+                            shortcutRepository: ShortcutRepository): Boolean {
+    runBlocking { withContext(Dispatchers.IO) {
+            shortcutRepository.insert(shortcut).also { shortcut.id = it }
+    }}
+
+    val wrappingIntent = Intent(context, ShortcutHandlerActivity::class.java)
+    wrappingIntent.putExtra(ShortcutHandlerActivity.ARG_ENTRY_ID, shortcut.id)
     wrappingIntent.action = "android.intent.action.MAIN"
-    return createShortcut(context, name, wrappingIntent, icon)
+    return createShortcut(context, shortcut.name!!, wrappingIntent, shortcut.icon)
 }
 
 fun createShortcut(context: Context, name: String, intent: Intent, icon: Bitmap?): Boolean {
