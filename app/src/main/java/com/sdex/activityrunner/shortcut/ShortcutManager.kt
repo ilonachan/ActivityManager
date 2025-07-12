@@ -13,14 +13,25 @@ import com.sdex.activityrunner.db.shortcut.ShortcutRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 fun listShortcuts(context: Context): List<ShortcutInfoCompat> =
     ShortcutManagerCompat.getShortcuts(context, FLAG_MATCH_PINNED)
 
+private const val CLEANUP_ITEMS_MAX_LOG = 10
+
 fun cleanupShortcuts(context: Context, shortcutRepository: ShortcutRepository) {
-    shortcutRepository.clearUnused(listShortcuts(context).mapNotNull {
+    shortcutRepository.clearUnusedAndGet(listShortcuts(context).mapNotNull {
         it.intent.getLongExtra(ShortcutHandlerActivity.ARG_ENTRY_ID, 0).takeIf { it != 0L }
-    })
+    }).also { items ->
+        Timber.i(
+            "Deleted ${items.size} stale shortcut entries from DB: ${
+                items.mapIndexed { index, it ->
+                    if (index < CLEANUP_ITEMS_MAX_LOG) "\"${it.name}\" (${it.id})" else "..."
+                }.take(CLEANUP_ITEMS_MAX_LOG + 1).joinToString(", ")
+            }",
+        )
+    }
 }
 
 fun createShortcut(context: Context, shortcut: Shortcut,

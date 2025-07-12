@@ -93,6 +93,7 @@ dependencies {
     implementation(libs.preference.ktx)
     implementation(libs.recyclerview)
     implementation(libs.room.ktx)
+    implementation(libs.androidx.hilt.work)
     ksp(libs.room.compiler)
     implementation(libs.vectordrawable)
     implementation(libs.glide)
@@ -102,6 +103,7 @@ dependencies {
         exclude(group = "androidx.fragment", module = "fragment")
     }
     implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.common)
     ksp(libs.hilt.compiler)
     implementation(libs.timber)
     implementation(libs.icondialog)
@@ -136,4 +138,6 @@ dependencies {
     androidTestImplementation(libs.androidx.test.rules)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.espresso.intents)
+
+    implementation(libs.androidx.work.runtime)
 }
