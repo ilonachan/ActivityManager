@@ -28,7 +28,6 @@
     <string name="starting_activity_failed_security">You don\'t have permission to run this activity: %s</string>
     <string name="starting_intent_broadcast">Broadcasting Intent</string>
     <string name="starting_intent_broadcast_failed">Failed to broadcast Intent</string>
-    <string name="starting_intent_broadcast_missing">No Broadcast Intent specified</string>
     <string name="starting_activity_intent">Starting activity</string>
     <string name="starting_activity_intent_failed">Failed to start activity</string>
     <string name="starting_activity_root_error">Failed to launch the activity using root</string>

@@ -11,7 +11,7 @@ import com.sdex.activityrunner.db.LaunchTypeConverter
 
 val MIGRATION_1_2 = object : Migration(1, 2) {
     override fun migrate(db: SupportSQLiteDatabase) {
-        db.execSQL("ALTER TABLE `HistoryModel` ADD COLUMN `launchType` TEXT DEFAULT 'TYPE_ACTIVITY'")
+        db.execSQL("ALTER TABLE `HistoryModel` ADD COLUMN `launchType` TEXT DEFAULT 'Activity'")
     }
 }
 

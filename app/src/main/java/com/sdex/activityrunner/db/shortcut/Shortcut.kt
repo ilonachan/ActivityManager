@@ -51,11 +51,32 @@ class Shortcut : Serializable {
      * Additional data attached to the intent, normally a Uri
      */
     var data: String? = null
+    /**
+     * The MIME-Type of the [data] attached to the intent, if present
+     */
     var mimeType: String? = null
+    /**
+     * A list of category names (as defined in the `CATEGORY_*` constants of the
+     * [Intent][android.content.Intent] class)
+     * used by Android to restrict which activities can meaningfully accept the intent,
+     * if no specific [ComponentName][android.content.ComponentName] is specified.
+     */
     @TypeConverters(CategoryListConverter::class)
     var categories: MutableList<String> = mutableListOf()
+    /**
+     * A collection of flags (as defined in the `FLAG_*` constants of the
+     * [Intent][android.content.Intent] class) modifying the way the intent
+     * is to be processed.
+     */
     var flags: Int? = null
+    /**
+     * A mapping of additional data parameters that are passed to the intent receiver.
+     */
     var extras: MutableList<LaunchParamsExtra> = mutableListOf()
+    /**
+     * The way the Intent should be executed: whether Android should select a single activity
+     * to start (default), or the Intent should be broadcast to anyone who can receive it.
+     */
     var launchType: LaunchType? = null
 
     override fun equals(other: Any?): Boolean {

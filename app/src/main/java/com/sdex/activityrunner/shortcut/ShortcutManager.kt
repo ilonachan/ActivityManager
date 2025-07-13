@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import timber.log.Timber
+import java.util.Date
 
 fun listShortcuts(context: Context): List<ShortcutInfoCompat> =
     ShortcutManagerCompat.getShortcuts(context, FLAG_MATCH_PINNED)
@@ -41,7 +42,8 @@ fun cleanupShortcuts(context: Context, shortcutRepository: ShortcutRepository) {
 fun createShortcut(context: Context, shortcut: Shortcut,
                             shortcutRepository: ShortcutRepository): Boolean {
     runBlocking { withContext(Dispatchers.IO) {
-            shortcutRepository.insert(shortcut).also { shortcut.id = it }
+        shortcut.timestamp = Date().time
+        shortcutRepository.insert(shortcut).also { shortcut.id = it }
     }}
 
     val wrappingIntent = Intent(context, ShortcutHandlerActivity::class.java)
