@@ -103,7 +103,8 @@ dependencies {
         exclude(group = "androidx.fragment", module = "fragment")
     }
     implementation(libs.hilt.navigation.compose)
-    implementation(libs.hilt.common)
+    implementation(libs.androidx.hilt.common)
+    ksp(libs.androidx.hilt.compiler)
     ksp(libs.hilt.compiler)
     implementation(libs.timber)
     implementation(libs.icondialog)

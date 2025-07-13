@@ -24,13 +24,17 @@ fun cleanupShortcuts(context: Context, shortcutRepository: ShortcutRepository) {
     shortcutRepository.clearUnusedAndGet(listShortcuts(context).mapNotNull {
         it.intent.getLongExtra(ShortcutHandlerActivity.ARG_ENTRY_ID, 0).takeIf { it != 0L }
     }).also { items ->
-        Timber.i(
-            "Deleted ${items.size} stale shortcut entries from DB: ${
-                items.mapIndexed { index, it ->
-                    if (index < CLEANUP_ITEMS_MAX_LOG) "\"${it.name}\" (${it.id})" else "..."
-                }.take(CLEANUP_ITEMS_MAX_LOG + 1).joinToString(", ")
-            }",
-        )
+        if(items.isEmpty()) {
+            Timber.i("Deleted 0 stale shortcut entries from DB")
+        } else {
+            Timber.i(
+                "Deleted ${items.size} stale shortcut entries from DB: ${
+                    items.mapIndexed { index, it ->
+                        if (index < CLEANUP_ITEMS_MAX_LOG) "\"${it.name}\" (${it.id})" else "..."
+                    }.take(CLEANUP_ITEMS_MAX_LOG + 1).joinToString(", ")
+                }",
+            )
+        }
     }
 }
 
